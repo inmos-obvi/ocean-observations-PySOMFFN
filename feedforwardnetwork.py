@@ -1048,11 +1048,11 @@ class FeedForwardNetwork:
             # determine upper bounds of variability plot  -->> FIXME make dynamic
             vmax_sdev = 100
 
-        # reload observational dataset
-        if os.path.isfile('./input-data/SOCATv2024.mat'):
+        # reload observational dataset TODO - temp fix
+        if os.path.isfile('../input-data/pco2obsV2018.mat'):
 
             # load SOCATv2024 data from MATLAB data file
-            arr_obs = sp.io.loadmat('./input-data/SOCATv2024.mat')['fco2'].astype('float32')
+            arr_obs = sp.io.loadmat('../input-data/pco2obsV2018.mat')['fco2'].astype('float32')
 
         # TODO provide user configuration of filename
         elif os.path.isfile('./input-data/SOCATv2024_tracks_gridded_monthly.nc'):

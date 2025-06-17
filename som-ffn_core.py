@@ -47,15 +47,26 @@ ffn = FeedForwardNetwork()
 
 ##  Define input data for Self-Organising Map
 som_input = {
-    'mld': './input-data/mld_clim_v2024.mat',
-    'sss': './input-data/sss_v2024.mat',
-    'sst': './input-data/sst_v2024.mat',
-    'pressure': './input-data/pres_v2024.nc',
-    'data_all': './input-data/atm_co2_grid_v2024.nc',
-    'data_all': './input-data/atm_pco2_grid_v2024.nc'
+    'mld': '../input-data/mld_clim_v2018.mat',
+    'sss': '../input-data/sss_v2018.mat',
+    'sst': '../input-data/sst_v2018.mat',
+    # 'pressure': './input-data/pres_v2024.nc',
+    # 'data_all': '../input-data/atm_co2_grid_v2024.nc',
+    'data_all': '../input-data/atm_pco2_grid_v2018.mat'
     # 'chl': './input-data/chl_v2024.mat'
     # 'data_taka': './input-data/Taka_pCO2_eth_v2024.mat'
 } 
+
+# som_input = {
+#     'mld': './input-data/mld_clim_v2024.mat',
+#     'sss': './input-data/sss_v2024.mat',
+#     'sst': './input-data/sst_v2024.mat',
+#     'pressure': './input-data/pres_v2024.nc',
+#     'data_all': './input-data/atm_co2_grid_v2024.nc',
+#     'data_all': './input-data/atm_pco2_grid_v2024.nc'
+#     # 'chl': './input-data/chl_v2024.mat'
+#     # 'data_taka': './input-data/Taka_pCO2_eth_v2024.mat'
+# } 
 
 # ##  Call Functions for Feed Forward Network Operation
 # som.LoadInputData(som_input)
@@ -72,12 +83,21 @@ som_input = {
 
 ##  Define input data for Feed Forward Network
 ffn_input = {
-    'mld': './input-data/mld_clim_v2024.mat',
-    'sss': './input-data/sss_v2024.nc',
-    'sst': './input-data/sst_v2024.mat',
-    'provinces': './input-data/provinces.nc',
-    'fco2_ave_weighted': './input-data/SOCATv2024_tracks_gridded_monthly.nc'
+    'mld': '../input-data/mld_clim_v2018.mat',
+    'sss': '../input-data/sss_v2018.mat',
+    'sst': '../input-data/sst_v2018.mat',
+    'provinces': '../input-data/provinces.nc',
+    'fco2_ave_weighted': '../input-data/pco2obsV2018.mat'
 } 
+
+# ffn_input = {
+#     'mld': '../input-data/mld_clim_v2024.mat',
+#     'sss': '../input-data/sss_v2024.nc',
+#     'sst': '../input-data/sst_v2024.mat',
+#     'provinces': '../input-data/provinces.nc',
+#     'fco2_ave_weighted': '../input-data/SOCATv2024_tracks_gridded_monthly.nc'
+# } 
+
 
 ##  Call Functions for Feed Forward Network Operation
 ffn.LoadInputData(ffn_input)
