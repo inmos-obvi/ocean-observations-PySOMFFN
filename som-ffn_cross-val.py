@@ -5,7 +5,7 @@
 ####    EDITED       : Daniel Burt              VLIZ        daniel.burt@vliz.be         ####
 ####                    - Initial feature development and integration with              ####
 ####                      translation by Soren Berger.                                  ####
-####    LAST EDIT    : 09.02.2026                                                       ####
+####    LAST EDIT    : 11.02.2026                                                       ####
 ####    DESCRIPTION  : Core file for running Self-Organising Map - Feed Forward         ####
 ####                   Network (SOM-FFN) method based on the MATLAB implementation      ####
 ####                   of Peter Landschuetzer and originally described in:              ####
@@ -45,48 +45,46 @@ ffn = FeedForwardNetwork()
 
 ####  STEP 1: Self-Organizing Map
 
-##  Define input data for Self-Organising Map
-som_input = {
-    'mld': './input-data/mld_clim_v2024.mat',
-    'sss': './input-data/sss_v2024.mat',
-    'sst': './input-data/sst_v2024.mat',
-    'pressure': './input-data/pres_v2024.nc',
-    'data_all': './input-data/atm_co2_grid_v2024.nc',
-    'data_all': './input-data/atm_pco2_grid_v2024.nc'
-    # 'chl': './input-data/chl_v2024.mat'
-    # 'data_taka': './input-data/Taka_pCO2_eth_v2024.mat'
-} 
+# ##  Define input data for Self-Organising Map
+# som_input = {
+#     'mld': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/mld_clim_v2024.mat',
+#     'sss': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/sss_v2024.mat',
+#     'sst': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/sst_v2024.mat',
+#     'pressure': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/pres_v2024.nc',
+#     'data_all': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/atm_co2_grid_v2024.nc',
+#     'data_all': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/atm_pco2_grid_v2024.nc'
+#     # 'chl': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/chl_v2024.mat'
+#     # 'data_taka': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/Taka_pCO2_eth_v2024.mat'
+# } 
 
-##  Call Functions for Feed Forward Network Operation
-som.LoadInputData(som_input)
-som.CalculateMeanMonths()
-# som.PlotInputsMonthly()  # optional
-som.ReshapeRearrange()
-som.IdentifyProvinces(som_sigma = 1.75, som_learning_rate = 1.0, number_of_epochs = 1000000)  # values upwards of 200000 work best
-# som.LoadComparisonProvinces()  # optional TODO
-# som.PlotProvinces(plot_type = 'mode-variability')  # optional TODO expand with additional visualisation options
-som.WriteProvinces(fileext = 'nc')  # optional
+# ##  Call Functions for Feed Forward Network Operation
+# som.LoadInputData(som_input)
+# som.CalculateMeanMonths()
+# # som.PlotInputsMonthly()  # optional
+# som.ReshapeRearrange()
+# som.IdentifyProvinces(som_sigma = 1.75, som_learning_rate = 1.0, number_of_epochs = 1000000)  # values upwards of 200000 work best
+# # som.LoadComparisonProvinces()  # optional TODO
+# # som.PlotProvinces(plot_type = 'mode-variability')  # optional TODO expand with additional visualisation options
+# som.WriteProvinces(fpath_output = '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data', fileext = 'nc')  # optional
 
 
 ####  STEP 2: Feed Forward Network
 
 ##  Define input data for Feed Forward Network
 ffn_input = {
-    'mld': './input-data/mld_clim_v2024.mat',
-    'sss': './input-data/sss_v2024.nc',
-    'sst': './input-data/sst_v2024.mat',
-    'provinces': './input-data/provinces.nc',
-    'fco2_ave_weighted': './input-data/SOCATv2024_tracks_gridded_monthly.nc'
+    'mld': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/mld_clim_v2024.mat',
+    'sss': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/sss_v2024.mat',
+    'sst': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/sst_v2024.mat',
+    # 'provinces': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/som-output_provinces.nc',  # disabled for cross-val-01
+    'fco2_ave_weighted': '/work/bg1446/m300722/machine-learning/model-code/python_som-ffn_3d/input-data/SOCATv2024_tracks_gridded_monthly.nc'
 } 
 
 ##  Call Functions for Feed Forward Network Operation
 ffn.LoadInputData(ffn_input)
 ffn.CropInputData()
-# ffn.PlotInputData()
 ffn.PrepareInputs()
-# ffn.MakeTrainModel(length_patience = 10)
-ffn.MakeTrainModelLoop(length_patience = 10)
-# ffn.PlotDiagnostic()  # FIXME not tested with "loop" approach
-# ffn.PredictEstimate()
-ffn.PredictEstimateLoop() 
-# ffn.PlotPrediction(plot_type = 'mean-comparison')
+ffn.PrepareFolds(n_folds               = 5, 
+                 intermediate_dir_path = '/work/bg1446/m300722/machine-learning/intermediate-data/3d_pco2_cross-val-01')
+ffn.OptimiseHyperparameters(n_trials       = 50, 
+                            n_folds        = 5,
+                            fpath_database = '/work/bg1446/m300722/machine-learning/intermediate-data/3d_pco2_cross-val-01')

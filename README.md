@@ -32,12 +32,5 @@ Please contact Creators regarding test data and input data requirements.
 PySOMFFN is written in and uses the Python environment and requires:  
     - Python version 3.12.3  
 
-The classes and their functions are dependent on the following packages:  
-    - CartoPy 0.22.0  
-    - MatPlotLib 3.6.3  
-    - MiniSom 2.3.3 (https://github.com/JustGlowing/minisom)  
-    - NumPy 1.26.4  
-    - SciPy 1.11.4  
-    - SKlearn 1.11.4  
-    - TensorFlow 2.18.0 (https://www.tensorflow.org/)  
-    - Xarray 2024.2.0  
+Anaconda environment files are provided to install the relevant CPU/ GPU
+  environments with all necessary dependencies.
